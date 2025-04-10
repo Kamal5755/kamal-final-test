@@ -5,20 +5,21 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com)
+      - $(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533267018768.dkr.ecr.us-east-1.amazonaws.com)
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t wild-rydes-app .
-      - docker tag wild-rydes-app:latest ${533267018768}.dkr.ecr.${us-east-1}.amazonaws.com/wild-rydes-app:latest
+      - docker tag wild-rydes-app:latest 533267018768.dkr.ecr.us-east-1.amazonaws.com/wild-rydes-app:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/wild-rydes-app:latest
+      - docker push 533267018768.dkr.ecr.us-east-1.amazonaws.com/wild-rydes-app:latest
       - echo Writing imagedefinitions.json...
-      - printf '[{"name":"wild-rydes-container","imageUri":"%s"}]' ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/wild-rydes-app:latest > imagedefinitions.json
+      - printf '[{"name":"wild-rydes-container","imageUri":"%s"}]' 533267018768.dkr.ecr.us-east-1.amazonaws.com/wild-rydes-app:latest > imagedefinitions.json
+
 artifacts:
   files:
     - imagedefinitions.json
